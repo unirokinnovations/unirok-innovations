@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Client Login | Unirok Innovations{% endblock %}
+{% block content %}
+<section class="py-20 fade-in text-center max-w-sm mx-auto px-6">
+    <div class="bg-gray-50 dark:bg-unirokDark border border-gray-200 dark:border-white/10 p-8 rounded-2xl shadow-xl dark:shadow-none">
+        <h1 class="text-2xl font-bold text-unirokGold mb-2 tracking-tight">Client Portal</h1>
+        <p class="text-gray-500 dark:text-gray-400 text-sm mb-8">Log in to view secure catalogs and quotes.</p>
+        
+        <form action="{{ url_for('client_login') }}" method="POST" class="space-y-4">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            <div class="text-left">
+                <label class="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2 ml-1">Email Address</label>
+                <input type="email" name="email" required class="w-full bg-white dark:bg-black border border-gray-300 dark:border-white/20 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-unirokGold transition-all font-medium" placeholder="your@email.com">
+            </div>
+            <div class="text-left">
+                <label class="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2 ml-1">Password</label>
+                <input type="password" name="password" required class="w-full bg-white dark:bg-black border border-gray-300 dark:border-white/20 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-unirokGold transition-all font-medium" placeholder="••••••••">
+            </div>
+            <button type="submit" class="w-full bg-unirokGold text-black font-bold py-4 rounded-xl hover:bg-yellow-400 transition-all transform hover:-translate-y-1 shadow-lg shadow-unirokGold/20 mt-4">
+                Secure Login
+            </button>
+        </form>
+        <p class="mt-8 text-sm text-gray-500 dark:text-gray-400">Need an account? <a href="{{ url_for('client_register') }}" class="text-unirokGold font-bold hover:underline ml-1">Register here</a></p>
+    </div>
+</section>
+{% endblock %}

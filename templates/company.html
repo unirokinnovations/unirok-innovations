@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="py-20 fade-in">
+    <div class="max-w-4xl mx-auto px-6" style="--company-color: {{ company.brand_color }};">
+        <!-- Company Header -->
+        <div class="mb-12 border-b border-gray-200 dark:border-white/10 pb-10">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6" style="color: var(--company-color);">{{ company.name }}</h1>
+            <p class="text-xl text-gray-600 dark:text-gray-300 font-light leading-relaxed">{{ company.description }}</p>
+        </div>
+
+        <!-- Product Catalog -->
+        <h2 class="text-2xl font-bold mb-8 text-gray-900 dark:text-white">Product Catalog</h2>
+        
+        {% if company.products %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            {% for product in company.products %}
+            <div class="bg-gray-50 dark:bg-unirokDark border border-gray-200 dark:border-white/5 rounded-xl p-6 flex flex-col justify-between hover:border-unirokGold/50 transition-all duration-300 shadow-sm dark:shadow-none translate-y-0 hover:-translate-y-1">
+                <div>
+                    {% if product.image_url %}
+                    <div class="relative overflow-hidden rounded-lg mb-4 aspect-video border border-gray-200 dark:border-white/10">
+                        <img src="{{ product.image_url }}" alt="{{ product.name }}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                    </div>
+                    {% else %}
+                    <div class="w-full aspect-video bg-gray-200 dark:bg-black rounded-lg mb-4 border border-gray-200 dark:border-white/10 flex items-center justify-center text-gray-400 dark:text-gray-600 text-sm font-medium italic">Image Coming Soon</div>
+                    {% endif %}
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">{{ product.name }}</h3>
+                </div>
+                <div class="mt-6 flex justify-end pt-4 border-t border-gray-100 dark:border-white/5">
+                    <a href="{{ url_for('contact') }}" class="text-xs uppercase tracking-widest font-bold text-unirokGold hover:text-gray-900 dark:hover:text-white transition-colors">Request Quote →</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="bg-gray-50 dark:bg-unirokDark border border-dashed border-gray-300 dark:border-white/10 rounded-xl py-12 text-center text-gray-400 italic">
+            No products listed for {{ company.name }} yet.
+        </div>
+        {% endif %}
+
+        <div class="mt-16 text-center">
+            <a href="{{ url_for('contact') }}" class="inline-block px-10 py-5 bg-unirokGold text-black font-bold rounded hover:bg-yellow-400 transition-all transform hover:-translate-y-1">
+                Request a Custom Quote
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

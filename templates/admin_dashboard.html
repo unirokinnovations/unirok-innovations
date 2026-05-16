@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="py-12 fade-in max-w-5xl mx-auto px-6">
+    <div class="flex justify-between items-center mb-10 border-b border-gray-200 dark:border-white/10 pb-6">
+        <h1 class="text-3xl font-bold text-unirokGold flex items-center gap-3">
+            <span class="p-2 bg-gray-100 dark:bg-unirokDark rounded-xl">🛠</span> CMS Dashboard
+        </h1>
+        <a href="{{ url_for('admin_logout') }}" class="text-xs font-bold uppercase tracking-widest text-red-500 border border-red-500/30 px-6 py-2 rounded-xl hover:bg-red-500 hover:text-white transition-all">Logout</a>
+    </div>
+
+    <!-- Manage Companies -->
+    <div class="mb-16">
+        <h2 class="text-xl text-gray-900 dark:text-white font-bold mb-6 flex items-center gap-2">
+            <span class="text-unirokGold">01.</span> Add Partner Company
+        </h2>
+        <form action="{{ url_for('admin_add_company') }}" method="POST" class="bg-gray-50 dark:bg-unirokDark p-8 rounded-2xl border border-gray-200 dark:border-white/10 grid grid-cols-1 md:grid-cols-2 gap-6 shadow-sm dark:shadow-none">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            <div>
+                <label class="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2 ml-1">Company Name</label>
+                <input type="text" name="name" required class="w-full bg-white dark:bg-black border border-gray-300 dark:border-white/20 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:border-unirokGold outline-none transition-all" placeholder="e.g. UltraTech">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2 ml-1">Brand Accent Color (Hex)</label>
+                <input type="text" name="brand_color" value="#D4AF37" class="w-full bg-white dark:bg-black border border-gray-300 dark:border-white/20 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:border-unirokGold outline-none transition-all">
+            </div>
+            <div class="md:col-span-2">
+                <label class="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2 ml-1">Company Description</label>
+                <textarea name="description" rows="3" class="w-full bg-white dark:bg-black border border-gray-300 dark:border-white/20 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:border-unirokGold outline-none transition-all" placeholder="Tell us about this partner..."></textarea>
+            </div>
+            <div class="md:col-span-2">
+                <button type="submit" class="bg-unirokGold text-black px-8 py-3 rounded-xl font-bold hover:bg-yellow-400 transition-all transform hover:-translate-y-1 shadow-lg shadow-unirokGold/20">Add Company</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Existing Partners -->
+    <div class="mb-16">
+        <h2 class="text-xl text-gray-900 dark:text-white font-bold mb-6 flex items-center gap-2">
+            <span class="text-unirokGold">02.</span> Partners & Catalog
+        </h2>
+        
+        <div class="space-y-6">
+            {% for company in companies %}
+            <div class="bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-2xl overflow-hidden shadow-sm dark:shadow-none" style="--company-color: {{ company.brand_color }};">
+                <div class="bg-gray-50 dark:bg-unirokDark p-4 border-b border-gray-200 dark:border-white/10 flex justify-between items-center bg-gradient-to-r from-transparent to-transparent" style="border-left: 4px solid var(--company-color)">
+                    <h3 class="font-bold text-gray-900 dark:text-white">{{ company.name }}</h3>
+                    <form action="{{ url_for('admin_delete_company', id=company.id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
+                        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                        <button type="submit" class="text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-widest border border-red-500/20 transition-all">Delete</button>
+                    </form>
+                </div>
+                
+                <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Products -->
+                    <div>
+                        <h4 class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-4">Current Products</h4>
+                        <ul class="space-y-3">
+                            {% for product in company.products %}
+                            <li class="bg-gray-50 dark:bg-unirokDark px-4 py-3 rounded-xl border border-gray-200 dark:border-white/5 flex justify-between items-center">
+                                <div class="flex items-center gap-3">
+                                    {% if product.image_url %}
+                                    <img src="{{ product.image_url }}" alt="img" class="w-10 h-10 object-cover rounded-lg border border-gray-200 dark:border-white/20">
+                                    {% else %}
+                                    <div class="w-10 h-10 bg-white dark:bg-black border border-gray-200 dark:border-white/20 rounded-lg flex items-center justify-center text-[8px] text-gray-400 font-bold uppercase">No Img</div>
+                                    {% endif %}
+                                    <span class="text-sm font-bold text-gray-700 dark:text-gray-300">{{ product.name }}</span>
+                                </div>
+                            </li>
+                            {% else %}
+                            <li class="text-gray-400 text-xs italic py-2">No products added yet.</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    
+                    <!-- Add Product Form -->
+                    <div class="bg-gray-50 dark:bg-unirokDark p-6 rounded-2xl border border-gray-200 dark:border-white/5">
+                        <h4 class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-4">Add Catalog Item</h4>
+                        <form action="{{ url_for('admin_add_product') }}" method="POST" class="space-y-3">
+                            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                            <input type="hidden" name="company_id" value="{{ company.id }}">
+                            <input type="text" name="name" required placeholder="Product Name..." class="w-full bg-white dark:bg-black border border-gray-300 dark:border-white/20 rounded-xl px-4 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-unirokGold transition-all">
+                            <input type="text" name="image_url" placeholder="Image URL (optional)..." class="w-full bg-white dark:bg-black border border-gray-300 dark:border-white/20 rounded-xl px-4 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-unirokGold transition-all">
+                            <button type="submit" class="w-full bg-gray-900 dark:bg-white text-white dark:text-black font-bold py-2 rounded-xl text-xs uppercase tracking-widest hover:bg-unirokGold dark:hover:bg-unirokGold transition-all">Add Product</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="text-gray-400 italic text-center py-10 bg-gray-50 dark:bg-unirokDark rounded-2xl border border-dashed border-gray-300 dark:border-white/10">No companies found.</div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Global Settings -->
+    <div class="mb-16">
+        <h2 class="text-xl text-gray-900 dark:text-white font-bold mb-6 flex items-center gap-2">
+            <span class="text-unirokGold">03.</span> Global Settings
+        </h2>
+        <form action="{{ url_for('admin_update_settings') }}" method="POST" class="bg-gray-50 dark:bg-unirokDark p-8 rounded-2xl border border-gray-200 dark:border-white/10 shadow-sm dark:shadow-none">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            <label class="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-3 ml-1">Google Form URL (Contact Route Integration)</label>
+            <div class="flex flex-col md:flex-row gap-4">
+                <input type="text" name="google_form_url" value="{{ form_setting.value if form_setting else '' }}" class="flex-grow bg-white dark:bg-black border border-gray-300 dark:border-white/20 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:border-unirokGold outline-none transition-all font-medium">
+                <button type="submit" class="bg-unirokGold text-black px-8 py-3 rounded-xl font-bold hover:bg-yellow-400 transition-all shadow-lg shadow-unirokGold/20">Update Settings</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Blog Manager -->
+    <div class="mb-16">
+        <h2 class="text-xl text-gray-900 dark:text-white font-bold mb-6 flex items-center gap-2">
+            <span class="text-unirokGold">04.</span> Blog Manager
+        </h2>
+        <div class="bg-gray-50 dark:bg-unirokDark p-8 rounded-2xl border border-gray-200 dark:border-white/10 mb-8 shadow-sm dark:shadow-none">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6">Create New Article</h3>
+            <form action="{{ url_for('admin_add_blog') }}" method="POST" class="space-y-6">
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2 ml-1">Article Title</label>
+                    <input type="text" name="title" required placeholder="Enter compelling title..." class="w-full bg-white dark:bg-black border border-gray-300 dark:border-white/20 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:border-unirokGold outline-none transition-all font-medium">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2 ml-1">Content (Markdown/HTML supported)</label>
+                    <textarea name="content" required rows="6" placeholder="Share your insights..." class="w-full bg-white dark:bg-black border border-gray-300 dark:border-white/20 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:border-unirokGold outline-none transition-all font-medium"></textarea>
+                </div>
+                <button type="submit" class="bg-unirokGold text-black px-10 py-4 rounded-xl font-bold hover:bg-yellow-400 transition-all transform hover:-translate-y-1 shadow-lg shadow-unirokGold/20">Publish Post</button>
+            </form>
+        </div>
+        
+        <div class="space-y-4">
+            {% for post in posts %}
+            <div class="bg-white dark:bg-black border border-gray-200 dark:border-white/10 p-5 rounded-2xl flex justify-between items-center shadow-sm dark:shadow-none">
+                <div>
+                    <div class="text-gray-900 dark:text-white font-bold">{{ post.title }}</div>
+                    <div class="text-[10px] font-bold text-unirokGold uppercase tracking-widest mt-1">{{ post.created_at.strftime('%Y-%m-%d') }}</div>
+                </div>
+                <form action="{{ url_for('admin_delete_blog', id=post.id) }}" method="POST" onsubmit="return confirm('Delete this post permanently?');">
+                    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                    <button type="submit" class="text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest border border-red-500/20 transition-all">Delete</button>
+                </form>
+            </div>
+            {% else %}
+            <div class="py-10 bg-gray-100 dark:bg-unirokDark border border-dashed border-gray-300 dark:border-white/10 rounded-2xl text-center text-gray-400 italic text-sm">No blog posts found.</div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

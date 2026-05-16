@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative min-h-[70vh] flex items-center justify-center overflow-hidden fade-in">
+    <!-- Subtle Background Elements -->
+    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-unirokGold/10 dark:bg-unirokGold/5 rounded-full blur-[100px]"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-blue-500/10 dark:bg-blue-500/5 rounded-full blur-[80px]"></div>
+
+    <div class="relative z-10 text-center px-6 max-w-4xl mx-auto">
+        <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 leading-tight text-gray-900 dark:text-white">
+            Elevating Spaces with <span class="text-transparent bg-clip-text bg-gradient-to-r from-unirokGold to-yellow-500 dark:to-yellow-200">Premium Materials</span>
+        </h1>
+        <p class="text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto font-light">
+            Unirok Innovations is your trusted distributor for elite building and architectural supplies. We bring world-class quality to your doorstep.
+        </p>
+        <div class="flex justify-center gap-6">
+            <a href="{{ url_for('contact') }}" class="px-8 py-4 bg-unirokGold text-black font-semibold rounded hover:bg-yellow-400 hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all transform hover:-translate-y-1">
+                Request a Custom Quote
+            </a>
+            <a href="#partners" class="px-8 py-4 border border-gray-300 dark:border-white/20 text-gray-700 dark:text-white rounded hover:bg-gray-100 dark:hover:bg-white/5 transition-all">
+                Explore Partners
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Partners/Catalog Section -->
+<section id="partners" class="py-24 bg-gray-50 dark:bg-black relative border-t border-gray-200 dark:border-white/5">
+    <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center mb-16 fade-in" style="animation-delay: 0.2s;">
+            <h2 class="text-3xl font-bold uppercase tracking-wider text-gray-900 dark:text-white">Our Premier Partners</h2>
+            <div class="w-16 h-1 bg-unirokGold mx-auto mt-4"></div>
+            <p class="text-gray-500 dark:text-gray-400 mt-4 font-light">We collaborate with industry leaders to bring you unparalleled excellence.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {% for company in companies %}
+            <a href="{{ url_for('company', slug=company.slug) }}" class="group block fade-in" style="animation-delay: 0.3s; --company-color: {{ company.brand_color }};">
+                <div class="bg-white dark:bg-unirokDark border border-gray-200 dark:border-white/10 rounded-xl p-8 h-full transition-all duration-300 hover:-translate-y-2 relative overflow-hidden shadow-sm dark:shadow-none border-b-[3px]"
+                     style="border-bottom-color: var(--company-color);"
+                     onmouseover="this.style.boxShadow='0 10px 30px ' + getComputedStyle(this.parentElement).getPropertyValue('--company-color') + '20'"
+                     onmouseout="this.style.boxShadow='none'">
+                    
+                    <!-- Glow Effect -->
+                    <div class="absolute -top-10 -right-10 w-32 h-32 rounded-full opacity-0 group-hover:opacity-20 transition-opacity blur-[30px]"
+                         style="background-color: var(--company-color);"></div>
+
+                    <h3 class="text-2xl font-bold mb-4" style="color: var(--company-color);">{{ company.name }}</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-6">
+                        {{ company.description[:120] }}{% if company.description|length > 120 %}...{% endif %}
+                    </p>
+                    <div class="text-unirokGold font-semibold text-sm flex items-center gap-2 group-hover:translate-x-2 transition-transform">
+                        Explore Catalog →
+                    </div>
+                </div>
+            </a>
+            {% else %}
+            <div class="col-span-3 text-center text-gray-400 py-12 italic">
+                No partners found. Go to the Admin dashboard to add some!
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

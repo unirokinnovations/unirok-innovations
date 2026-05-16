@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="py-20 fade-in">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+        <h1 class="text-4xl font-bold mb-6 text-unirokGold text-center">Get a Custom Quote</h1>
+        <p class="text-lg text-gray-600 dark:text-gray-400 mb-12 font-light leading-relaxed">
+            Whether you need bulk materials or specialized architectural solutions from our premier partners, our team is ready to provide you with a customized quotation.
+        </p>
+
+        <div class="bg-gray-50 dark:bg-unirokDark border border-gray-200 dark:border-white/10 p-10 rounded-xl mb-12 shadow-sm dark:shadow-none">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Quote Request Form</h2>
+            <p class="text-gray-500 dark:text-gray-400 mb-8 text-sm leading-relaxed">We use a secure Google Form to manage our quotation requests to ensure fast processing and accurate filtering.</p>
+            
+            <a href="{{ google_form_url }}" target="_blank" rel="noopener noreferrer" class="inline-block px-10 py-5 bg-unirokGold text-black text-lg font-bold rounded hover:bg-yellow-400 transition-transform transform hover:-translate-y-1 shadow-[0_0_15px_rgba(212,175,55,0.3)]">
+                Open Contact / Quote Form
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 text-left mt-16 pt-16 border-t border-gray-200 dark:border-white/10">
+            <div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Direct Contact</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-3 font-medium"><span class="text-unirokGold mr-2 font-bold">Email:</span> contact@unirokinnovations.com</p>
+                <p class="text-gray-600 dark:text-gray-400 font-medium"><span class="text-unirokGold mr-2 font-bold">Phone:</span> +91 98765 43210</p>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Business Hours</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-3 font-medium">Monday - Friday: 9:00 AM - 6:00 PM</p>
+                <p class="text-gray-600 dark:text-gray-400 font-medium">Saturday: 10:00 AM - 2:00 PM</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

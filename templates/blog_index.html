@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Unirok Blog | Insights & Highlights{% endblock %}
+{% block content %}
+<section class="py-20 fade-in text-center max-w-4xl mx-auto px-6">
+    <h1 class="text-4xl font-bold text-unirokGold mb-4">Unirok Updates</h1>
+    <p class="text-gray-600 dark:text-gray-400 mb-12">Latest news, products, and insights from our experts.</p>
+    
+    <div class="space-y-8 text-left">
+        {% for post in posts %}
+        <a href="{{ url_for('blog_post', slug=post.slug) }}" class="block bg-gray-50 dark:bg-unirokDark border border-gray-200 dark:border-white/10 p-8 rounded-xl hover:border-unirokGold/50 transition-all transform hover:-translate-y-1 shadow-sm dark:shadow-none">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">{{ post.title }}</h2>
+            <div class="text-sm font-bold text-unirokGold mb-4 uppercase tracking-widest">{{ post.created_at.strftime('%B %d, %Y') }}</div>
+            <p class="text-gray-600 dark:text-gray-400 leading-relaxed">{{ post.content[:200] }}...</p>
+            <div class="mt-6 text-xs uppercase tracking-widest text-gray-900 dark:text-white font-bold group-hover:text-unirokGold transition-colors">Read Full Article →</div>
+        </a>
+        {% else %}
+        <div class="py-20 bg-gray-50 dark:bg-unirokDark border border-dashed border-gray-300 dark:border-white/10 rounded-xl text-gray-400 italic text-center">
+            No posts currently available. Please check back later.
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

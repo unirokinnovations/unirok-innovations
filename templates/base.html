@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Unirok Innovations{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}Highly reputed distributor and dealer of premium building materials.{% endblock %}">
+    
+    <!-- Theme Detection Script -->
+    <script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        unirokDark: '#121212',
+                        unirokGold: '#D4AF37',
+                        unirokOrange: '#FF7518',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in { animation: fadeIn 0.8s ease-in forwards; opacity: 0; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .nav-link { position: relative; transition: color 0.3s; }
+        .nav-link::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0;
+            background-color: #D4AF37; transition: width 0.3s ease;
+        }
+        .nav-link:hover::after { width: 100%; }
+        
+        .hover-glow:hover { box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col bg-white text-gray-900 dark:bg-unirokDark dark:text-gray-100 transition-colors duration-300">
+
+    <!-- Global Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-white/10 px-6 py-2">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <!-- Logo Section -->
+            <a href="{{ url_for('index') }}" class="flex items-center group">
+                <!-- Dual Logo Support -->
+                <img src="{{ url_for('static', filename='logo-light.png') }}" alt="Unirok Logo" class="h-12 md:h-16 object-contain dark:hidden hover:scale-105 transition-transform duration-300">
+                <img src="{{ url_for('static', filename='logo-dark.png') }}" alt="Unirok Logo" class="h-12 md:h-16 object-contain hidden dark:block hover:scale-105 transition-transform duration-300">
+            </a>
+            
+            <!-- Links -->
+            <div class="hidden md:flex gap-8 items-center text-xs uppercase tracking-widest font-semibold">
+                <a href="{{ url_for('index') }}" class="nav-link hover:text-unirokGold">Home</a>
+                <a href="{{ url_for('about') }}" class="nav-link hover:text-unirokGold">About</a>
+                <a href="{{ url_for('blog_index') }}" class="nav-link hover:text-unirokGold">Blog</a>
+                <a href="{{ url_for('contact') }}" class="nav-link hover:text-unirokGold">Contact</a>
+                
+                <!-- Theme Toggle Button -->
+                <button id="theme-toggle" class="p-2 rounded-full bg-gray-100 dark:bg-white/10 text-gray-600 dark:text-unirokGold hover:bg-gray-200 dark:hover:bg-white/20 transition-colors focus:outline-none">
+                    <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div class="md:hidden flex items-center gap-4">
+                <button id="mobile-theme-toggle" class="p-2 text-unirokGold focus:outline-none">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+                <button class="text-unirokGold p-2 border border-unirokGold rounded">Menu</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    <div class="max-w-4xl mx-auto mt-4 px-4 w-full z-40 relative">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="p-4 mb-4 text-sm rounded bg-gray-50 dark:bg-unirokDark border {{ 'border-green-500 text-green-700 dark:text-green-300' if category == 'success' else 'border-red-500 text-red-700 dark:text-red-300' }}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Global Footer -->
+    <footer class="bg-gray-50 dark:bg-black border-t border-gray-200 dark:border-white/10 py-12 mt-16">
+        <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div>
+                <h3 class="text-xl font-bold text-unirokGold mb-4 uppercase tracking-widest">Unirok Innovations</h3>
+                <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">Highly reputed distributor and dealer of premium building materials, bridging the gap between world-class manufacturers and high-end architectural projects.</p>
+            </div>
+            <div>
+                <h4 class="text-gray-900 dark:text-white font-bold mb-4 uppercase text-sm tracking-widest">Quick Links</h4>
+                <ul class="space-y-3 text-sm text-gray-500 dark:text-gray-400">
+                    <li><a href="{{ url_for('about') }}" class="hover:text-unirokGold transition-colors">About Us</a></li>
+                    <li><a href="{{ url_for('blog_index') }}" class="hover:text-unirokGold transition-colors">Latest Updates</a></li>
+                    <li><a href="{{ url_for('contact') }}" class="hover:text-unirokGold transition-colors">Request Quote</a></li>
+                    <li><a href="{{ url_for('admin_login') }}" class="hover:text-unirokGold transition-colors">Admin Portal</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-gray-900 dark:text-white font-bold mb-4 uppercase text-sm tracking-widest">Connect</h4>
+                <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">contact@unirokinnovations.com<br>+91 1234567890</p>
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-white/5 hover:bg-unirokGold dark:hover:bg-unirokGold transition-all cursor-pointer flex items-center justify-center text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-black font-bold">in</div>
+                    <div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-white/5 hover:bg-unirokGold dark:hover:bg-unirokGold transition-all cursor-pointer flex items-center justify-center text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-black font-bold">fb</div>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-6xl mx-auto px-6 mt-12 pt-6 border-t border-gray-200 dark:border-white/10 text-center text-xs text-gray-400">
+            &copy; 2026 Unirok Innovations. Designed for Excellence.
+        </div>
+    </footer>
+
+    <script>
+        var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+        // Change the icons inside the button based on previous settings
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            themeToggleLightIcon.classList.remove('hidden');
+        } else {
+            themeToggleDarkIcon.classList.remove('hidden');
+        }
+
+        var themeToggleBtn = document.getElementById('theme-toggle');
+
+        themeToggleBtn.addEventListener('click', function() {
+            // toggle icons inside button
+            themeToggleDarkIcon.classList.toggle('hidden');
+            themeToggleLightIcon.classList.toggle('hidden');
+
+            // if set via local storage previously
+            if (localStorage.getItem('theme')) {
+                if (localStorage.getItem('theme') === 'light') {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                }
+
+            // if NOT set via local storage previously
+            } else {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                }
+            }
+            
+        });
+        
+        // Mobile Toggle logic
+        document.getElementById('mobile-theme-toggle').addEventListener('click', function() {
+            themeToggleBtn.click();
+        });
+    </script>
+</body>
+</html>

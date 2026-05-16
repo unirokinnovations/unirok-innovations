@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>{{ url_for('index', _external=True) }}</loc>
+  </url>
+  <url>
+    <loc>{{ url_for('about', _external=True) }}</loc>
+  </url>
+  <url>
+    <loc>{{ url_for('contact', _external=True) }}</loc>
+  </url>
+  <url>
+    <loc>{{ url_for('blog_index', _external=True) }}</loc>
+  </url>
+  {% for company in companies %}
+  <url>
+    <loc>{{ url_for('company', slug=company.slug, _external=True) }}</loc>
+  </url>
+  {% endfor %}
+  {% for post in posts %}
+  <url>
+    <loc>{{ url_for('blog_post', slug=post.slug, _external=True) }}</loc>
+  </url>
+  {% endfor %}
+</urlset>
